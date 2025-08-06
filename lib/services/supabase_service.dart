@@ -1,88 +1,165 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:io';
 
 class SupabaseService {
-  static final SupabaseService _instance = SupabaseService._internal();
-  factory SupabaseService() => _instance;
-  SupabaseService._internal();
+  static const String _supabaseUrl = 'YOUR_SUPABASE_URL';
+  static const String _supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
 
-  late final SupabaseClient _supabase;
-  bool _initialized = false;
+  late SupabaseClient _supabase;
 
   Future<void> initialize() async {
-    if (_initialized) return;
-
     await Supabase.initialize(
-      url: 'YOUR_SUPABASE_URL', // Replace with your Supabase URL
-      anonKey: 'YOUR_SUPABASE_ANON_KEY', // Replace with your Supabase anon key
+      url: _supabaseUrl,
+      anonKey: _supabaseAnonKey,
     );
-
     _supabase = Supabase.instance.client;
-    _initialized = true;
   }
 
-  SupabaseClient get client => _supabase;
-
-  Future<AuthResponse> signUp({
+  Future<bool> signUp({
     required String email,
     required String password,
     required Map<String, dynamic> userData,
+    File? profileImage,
   }) async {
-    final auth = await _supabase.auth.signUp(
-      email: email,
-      password: password,
-    );
+    try {
+      // Create user account
+      final AuthResponse response = await _supabase.auth.signUp(
+        email: email,
+        password: password,
+      );
 
-    if (auth.user != null) {
-      // Insert additional user data into the profiles table
-      await _supabase.from('profiles').insert({
-        'id': auth.user!.id,
-        'email': email,
-        ...userData,
-      });
+      if (response.user != null) {
+        // Upload profile image if provided
+        String? imageUrl;
+        if (profileImage != null) {
+          final String fileName = '${response.user!.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          final String filePath = 'profile_images/$fileName';
+          
+          await _supabase.storage
+              .from('avatars')
+              .upload(filePath, profileImage);
+          
+          imageUrl = _supabase.storage
+              .from('avatars')
+              .getPublicUrl(filePath);
+        }
+
+        // Create user profile
+        await _supabase.from('profiles').insert({
+          'id': response.user!.id,
+          'email': email,
+          'name': userData['name'],
+          'phone': userData['phone'],
+          'gender': userData['gender'],
+          'university': userData['university'],
+          'graduation_year': userData['graduation_year'],
+          'course': userData['course'],
+          'avatar_url': imageUrl,
+          'created_at': DateTime.now().toIso8601String(),
+          'updated_at': DateTime.now().toIso8601String(),
+        });
+
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('Sign up error: $e');
+      return false;
     }
-
-    return auth;
   }
 
-  Future<AuthResponse> signIn({
+  Future<bool> signIn({
     required String email,
     required String password,
   }) async {
-    return await _supabase.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      final AuthResponse response = await _supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      return response.user != null;
+    } catch (e) {
+      print('Sign in error: $e');
+      return false;
+    }
   }
 
   Future<void> signOut() async {
     await _supabase.auth.signOut();
   }
 
-  Future<void> resetPassword(String email) async {
-    await _supabase.auth.resetPasswordForEmail(email);
+  User? getCurrentUser() {
+    return _supabase.auth.currentUser;
   }
 
-  // Get user profile data
-  Future<Map<String, dynamic>?> getUserProfile(String userId) async {
-    final response = await _supabase
-        .from('profiles')
-        .select()
-        .eq('id', userId)
-        .single();
-    return response;
+  Future<Map<String, dynamic>?> getUserProfile() async {
+    try {
+      final user = getCurrentUser();
+      if (user == null) return null;
+
+      final response = await _supabase
+          .from('profiles')
+          .select()
+          .eq('id', user.id)
+          .single();
+
+      return response;
+    } catch (e) {
+      print('Get user profile error: $e');
+      return null;
+    }
   }
 
-  // Update user profile
-  Future<void> updateUserProfile(String userId, Map<String, dynamic> data) async {
-    await _supabase
-        .from('profiles')
-        .update(data)
-        .eq('id', userId);
+  Future<bool> updateUserProfile(Map<String, dynamic> data) async {
+    try {
+      final user = getCurrentUser();
+      if (user == null) return false;
+
+      await _supabase
+          .from('profiles')
+          .update({
+            ...data,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', user.id);
+
+      return true;
+    } catch (e) {
+      print('Update user profile error: $e');
+      return false;
+    }
   }
 
-  // Check if user is logged in
-  bool get isAuthenticated => _supabase.auth.currentUser != null;
+  Future<bool> updateProfileImage(File imageFile) async {
+    try {
+      final user = getCurrentUser();
+      if (user == null) return false;
 
-  // Get current user
-  User? get currentUser => _supabase.auth.currentUser;
+      final String fileName = '${user.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String filePath = 'profile_images/$fileName';
+      
+      await _supabase.storage
+          .from('avatars')
+          .upload(filePath, imageFile);
+      
+      final String imageUrl = _supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+
+      await _supabase
+          .from('profiles')
+          .update({
+            'avatar_url': imageUrl,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', user.id);
+
+      return true;
+    } catch (e) {
+      print('Update profile image error: $e');
+      return false;
+    }
+  }
+
+  Stream<AuthState> get authStateChanges => _supabase.auth.onAuthStateChange;
 } 

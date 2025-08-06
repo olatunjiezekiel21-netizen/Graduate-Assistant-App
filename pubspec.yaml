@@ -17,6 +17,12 @@ dependencies:
   url_launcher: ^6.2.2
   file_picker: ^6.1.1
   provider: ^6.1.1
+  http: ^1.1.0
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.9
+  lottie: ^2.7.0
+  flutter_animate: ^4.2.0
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -26,4 +32,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - preloader assets/
+    - pages assets/
     - assets/images/ 
