@@ -7,6 +7,9 @@ import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/customer_care_screen.dart';
+import 'screens/messages_screen.dart';
+import 'screens/resume_builder_screen.dart';
 import 'services/supabase_service.dart';
 
 void main() async {
@@ -61,6 +64,9 @@ class NewlyGraduateHub extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
+        '/customer-care': (context) => const CustomerCareScreen(),
+        '/messages': (context) => const MessagesScreen(),
+        '/resume-builder': (context) => const ResumeBuilderScreen(),
       },
     );
   }
