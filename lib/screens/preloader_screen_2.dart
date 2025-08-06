@@ -79,17 +79,17 @@ class _PreloaderScreen2State extends State<PreloaderScreen2>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Animated logo with rotation effect
+              // Education-themed image with rotation effect
               AnimatedBuilder(
                 animation: _logoController,
                 builder: (context, child) {
                   return Transform.rotate(
-                    angle: _logoController.value * 2 * 3.14159,
+                    angle: _logoController.value * 0.1,
                     child: Container(
-                      width: 200,
-                      height: 200,
+                      width: 250,
+                      height: 250,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.green.withOpacity(0.3),
@@ -98,9 +98,10 @@ class _PreloaderScreen2State extends State<PreloaderScreen2>
                           ),
                         ],
                       ),
-                      child: ClipOval(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'preloader assets/Preloader2 (1).png',
+                          'preloader assets/Charco Education.png',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -118,7 +119,7 @@ class _PreloaderScreen2State extends State<PreloaderScreen2>
                   return Opacity(
                     opacity: _textController.value,
                     child: Text(
-                      'Loading Resources',
+                      'Learning Resources',
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -137,7 +138,7 @@ class _PreloaderScreen2State extends State<PreloaderScreen2>
                   return Opacity(
                     opacity: _textController.value,
                     child: Text(
-                      'Preparing your learning journey',
+                      'Preparing educational content and courses',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: Colors.grey.shade600,
@@ -182,7 +183,7 @@ class _PreloaderScreen2State extends State<PreloaderScreen2>
                   return Opacity(
                     opacity: _progressController.value,
                     child: Text(
-                      'Loading... ${(_progressController.value * 100).toInt()}%',
+                      'Loading courses... ${(_progressController.value * 100).toInt()}%',
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         color: Colors.grey.shade600,

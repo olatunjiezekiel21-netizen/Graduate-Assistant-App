@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/preloader_screen.dart';
+import 'screens/preloader_screen_1.dart';
+import 'screens/preloader_screen_2.dart';
+import 'screens/preloader_screen_3.dart';
+import 'screens/preloader_screen_4.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -48,9 +51,12 @@ class NewlyGraduateHub extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/preloader',
+      initialRoute: '/preloader1',
       routes: {
-        '/preloader': (context) => const PreloaderScreen(),
+        '/preloader1': (context) => const PreloaderScreen1(),
+        '/preloader2': (context) => const PreloaderScreen2(),
+        '/preloader3': (context) => const PreloaderScreen3(),
+        '/preloader4': (context) => const PreloaderScreen4(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),

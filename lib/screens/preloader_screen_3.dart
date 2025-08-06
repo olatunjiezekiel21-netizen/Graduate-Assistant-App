@@ -79,17 +79,17 @@ class _PreloaderScreen3State extends State<PreloaderScreen3>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Animated logo with slide effect
+              // Teaching-themed image with slide effect
               AnimatedBuilder(
                 animation: _logoController,
                 builder: (context, child) {
                   return Transform.translate(
                     offset: Offset(0, 20 * (1 - _logoController.value)),
                     child: Container(
-                      width: 200,
-                      height: 200,
+                      width: 250,
+                      height: 250,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.orange.withOpacity(0.3),
@@ -98,9 +98,10 @@ class _PreloaderScreen3State extends State<PreloaderScreen3>
                           ),
                         ],
                       ),
-                      child: ClipOval(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'preloader assets/Preloader3 (1).png',
+                          'preloader assets/Fresh Folk Teaching.png',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -118,7 +119,7 @@ class _PreloaderScreen3State extends State<PreloaderScreen3>
                   return Opacity(
                     opacity: _textController.value,
                     child: Text(
-                      'Connecting Services',
+                      'Networking Hub',
                       style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -137,7 +138,7 @@ class _PreloaderScreen3State extends State<PreloaderScreen3>
                   return Opacity(
                     opacity: _textController.value,
                     child: Text(
-                      'Setting up your personalized experience',
+                      'Connecting you with mentors and peers',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: Colors.grey.shade600,

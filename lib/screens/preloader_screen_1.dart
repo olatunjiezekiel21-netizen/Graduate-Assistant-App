@@ -79,17 +79,17 @@ class _PreloaderScreen1State extends State<PreloaderScreen1>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Animated logo with bounce effect
+              // Main preloader image with bounce effect
               AnimatedBuilder(
                 animation: _logoController,
                 builder: (context, child) {
                   return Transform.scale(
                     scale: _logoController.value,
                     child: Container(
-                      width: 200,
-                      height: 200,
+                      width: 250,
+                      height: 250,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.blue.withOpacity(0.3),
@@ -98,7 +98,8 @@ class _PreloaderScreen1State extends State<PreloaderScreen1>
                           ),
                         ],
                       ),
-                      child: ClipOval(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
                           'preloader assets/Preloader1 (1).png',
                           fit: BoxFit.cover,
@@ -137,7 +138,7 @@ class _PreloaderScreen1State extends State<PreloaderScreen1>
                   return Opacity(
                     opacity: _textController.value,
                     child: Text(
-                      'Welcome to your future',
+                      'Initializing your career journey',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: Colors.grey.shade600,
@@ -182,7 +183,7 @@ class _PreloaderScreen1State extends State<PreloaderScreen1>
                   return Opacity(
                     opacity: _progressController.value,
                     child: Text(
-                      'Initializing... ${(_progressController.value * 100).toInt()}%',
+                      'Loading... ${(_progressController.value * 100).toInt()}%',
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         color: Colors.grey.shade600,

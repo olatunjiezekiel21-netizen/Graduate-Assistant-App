@@ -79,17 +79,17 @@ class _PreloaderScreen4State extends State<PreloaderScreen4>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Animated logo with zoom effect
+              // Communication-themed image with zoom effect
               AnimatedBuilder(
                 animation: _logoController,
                 builder: (context, child) {
                   return Transform.scale(
                     scale: 0.8 + (_logoController.value * 0.2),
                     child: Container(
-                      width: 200,
-                      height: 200,
+                      width: 250,
+                      height: 250,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.purple.withOpacity(0.3),
@@ -98,9 +98,10 @@ class _PreloaderScreen4State extends State<PreloaderScreen4>
                           ),
                         ],
                       ),
-                      child: ClipOval(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'preloader assets/Preloader4 (1).png',
+                          'preloader assets/Happy Bunch Chat.png',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -137,7 +138,7 @@ class _PreloaderScreen4State extends State<PreloaderScreen4>
                   return Opacity(
                     opacity: _textController.value,
                     child: Text(
-                      'Your journey begins now',
+                      'Your career journey begins now',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: Colors.grey.shade600,
