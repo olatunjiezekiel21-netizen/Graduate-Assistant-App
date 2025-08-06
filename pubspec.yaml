@@ -1,6 +1,7 @@
 name: newly_graduate_hub
-description: A Flutter app for newly graduates.
+description: A comprehensive mobile app for newly graduated students to build their careers.
 publish_to: 'none'
+
 version: 1.0.0+1
 
 environment:
@@ -9,25 +10,22 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
-  supabase_flutter: ^2.0.2
-  shared_preferences: ^2.2.2
-  image_picker: ^1.0.5
-  intl: ^0.19.0
-  url_launcher: ^6.2.2
-  file_picker: ^6.1.1
-  provider: ^6.1.1
+  supabase_flutter: ^1.10.25
   http: ^1.1.0
   cached_network_image: ^3.3.0
   flutter_svg: ^2.0.9
   lottie: ^2.7.0
-  flutter_animate: ^4.2.0
+  flutter_animate: ^4.2.0+1
   google_fonts: ^6.1.0
+  image_picker: ^1.0.4
+  url_launcher: ^6.2.1
+
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
