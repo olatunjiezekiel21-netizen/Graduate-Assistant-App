@@ -10,13 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  supabase_flutter: ^1.10.25
+  supabase_flutter: ^2.8.4
   http: ^1.1.0
   cached_network_image: ^3.3.0
   flutter_svg: ^2.0.9
   lottie: ^2.7.0
   flutter_animate: ^4.2.0+1
-  google_fonts: ^6.1.0
+  google_fonts: ^5.1.0
   image_picker: ^1.0.4
   url_launcher: ^6.2.1
 
