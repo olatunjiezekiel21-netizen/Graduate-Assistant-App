@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'services/supabase_service.dart';
+import '../services/supabase_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         final success = await SupabaseService().signIn(
-          _emailController.text.trim(),
-          _passwordController.text,
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
         );
 
         if (success && mounted) {

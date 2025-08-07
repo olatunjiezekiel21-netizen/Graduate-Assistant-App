@@ -119,7 +119,7 @@ class _PreloaderScreen4State extends State<PreloaderScreen4> with TickerProvider
                         ),
                       );
                     },
-                  ).animate().fadeIn(duration: 1.seconds).then().zoom(),
+                  ).animate().fadeIn(duration: 1.seconds).then().scale(begin: const Offset(0.8, 0.8), end: const Offset(1.2, 1.2)),
 
                   const SizedBox(height: 40),
 
@@ -190,7 +190,7 @@ class _PreloaderScreen4State extends State<PreloaderScreen4> with TickerProvider
                         ],
                       );
                     },
-                  ).animate().fadeIn(delay: 1.seconds).then().pulse(),
+                  ).animate().fadeIn(delay: 1.seconds).then().shimmer(),
                 ],
               ),
             ),

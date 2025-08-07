@@ -266,7 +266,7 @@ class _UpdatesScreenState extends State<UpdatesScreen> {
       case UpdateType.resume:
         return Icons.description;
       case UpdateType.masters:
-        return Icons.graduation_cap;
+        return Icons.school;
     }
   }
 }

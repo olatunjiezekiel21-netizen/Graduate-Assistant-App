@@ -190,7 +190,7 @@ class _PreloaderScreen3State extends State<PreloaderScreen3> with TickerProvider
                         ],
                       );
                     },
-                  ).animate().fadeIn(delay: 1.seconds).then().pulse(),
+                  ).animate().fadeIn(delay: 1.seconds).then().shimmer(),
                 ],
               ),
             ),
