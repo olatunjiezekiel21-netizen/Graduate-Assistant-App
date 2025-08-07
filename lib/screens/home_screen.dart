@@ -102,157 +102,166 @@ class DashboardTab extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Main home screen image
-            Container(
-              width: double.infinity,
-              height: 200,
-              child: Image.asset(
-                'pages assets/Home screen.png',
-                fit: BoxFit.cover,
-              ),
-            ).animate().fadeIn(duration: 800.ms),
-
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome back!',
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800,
-                    ),
-                  ).animate().fadeIn(delay: 200.ms),
-
-                  const SizedBox(height: 20),
-
-                  // Quick actions grid
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: 1.2,
+      body: Stack(
+        children: [
+          // Exact Home screen design as background
+          Positioned.fill(
+            child: Image.asset(
+              'pages assets/Home screen.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+          
+          // Overlay content for navigation
+          SafeArea(
+            child: Column(
+              children: [
+                // Top section with navigation buttons
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildFeatureCard(
-                        context,
-                        'Resume Builder',
-                        'Create professional resume',
-                        'pages assets/Resume Buider (1).png',
-                        Colors.blue,
-                        () => Navigator.pushNamed(context, '/resume-builder'),
+                      IconButton(
+                        icon: const Icon(Icons.notifications, color: Colors.white),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/updates');
+                        },
                       ),
-                      _buildFeatureCard(
-                        context,
-                        'Skills',
-                        'Track your skills progress',
-                        'pages assets/Skills.png',
-                        Colors.green,
-                        () => Navigator.pushNamed(context, '/skills'),
-                      ),
-                      _buildFeatureCard(
-                        context,
-                        'Jobs',
-                        'Find job opportunities',
-                        'pages assets/job task.png',
-                        Colors.orange,
-                        () => Navigator.pushNamed(context, '/jobs'),
-                      ),
-                      _buildFeatureCard(
-                        context,
-                        'Updates',
-                        'Stay updated',
-                        'pages assets/updates.png',
-                        Colors.purple,
-                        () => Navigator.pushNamed(context, '/updates'),
+                      IconButton(
+                        icon: const Icon(Icons.message, color: Colors.white),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/messages');
+                        },
                       ),
                     ],
-                  ).animate().fadeIn(delay: 400.ms),
-
-                  const SizedBox(height: 24),
-
-                  // Additional features
-                  Text(
-                    'More Features',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade800,
-                    ),
-                  ).animate().fadeIn(delay: 600.ms),
-
-                  const SizedBox(height: 16),
-
-                  _buildFeatureRow(
-                    context,
-                    'Customer Care',
-                    'Get help and support',
-                    'pages assets/Customer care (1).png',
-                    Colors.red,
-                    () => Navigator.pushNamed(context, '/customer-care'),
-                  ).animate().fadeIn(delay: 800.ms),
-
-                  _buildFeatureRow(
-                    context,
-                    'Skill Progress',
-                    'Track your learning journey',
-                    'pages assets/skill Progress.png',
-                    Colors.teal,
-                    () => Navigator.pushNamed(context, '/skill-progress'),
-                  ).animate().fadeIn(delay: 1000.ms),
-
-                  _buildFeatureRow(
-                    context,
-                    'Tasks',
-                    'Manage your tasks',
-                    'pages assets/TASK (1).png',
-                    Colors.indigo,
-                    () => Navigator.pushNamed(context, '/tasks'),
-                  ).animate().fadeIn(delay: 1200.ms),
-
-                  _buildFeatureRow(
-                    context,
-                    'Masters Update',
-                    'Postgraduate opportunities',
-                    'pages assets/Masters update.png',
-                    Colors.amber,
-                    () => Navigator.pushNamed(context, '/masters-update'),
-                  ).animate().fadeIn(delay: 1400.ms),
-                ],
-              ),
+                  ),
+                ),
+                
+                const Spacer(),
+                
+                // Bottom section with feature buttons
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      // Feature buttons grid
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Resume Builder',
+                              'pages assets/Resume Buider (1).png',
+                              () => Navigator.pushNamed(context, '/resume-builder'),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Skills',
+                              'pages assets/Skills.png',
+                              () => Navigator.pushNamed(context, '/skills'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Jobs',
+                              'pages assets/job task.png',
+                              () => Navigator.pushNamed(context, '/jobs'),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Updates',
+                              'pages assets/updates.png',
+                              () => Navigator.pushNamed(context, '/updates'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Customer Care',
+                              'pages assets/Customer care (1).png',
+                              () => Navigator.pushNamed(context, '/customer-care'),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Skill Progress',
+                              'pages assets/skill Progress.png',
+                              () => Navigator.pushNamed(context, '/skill-progress'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Tasks',
+                              'pages assets/TASK (1).png',
+                              () => Navigator.pushNamed(context, '/tasks'),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildFeatureButton(
+                              context,
+                              'Masters Update',
+                              'pages assets/Masters update.png',
+                              () => Navigator.pushNamed(context, '/masters-update'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildFeatureCard(
+  Widget _buildFeatureButton(
     BuildContext context,
     String title,
-    String subtitle,
     String imagePath,
-    Color color,
     VoidCallback onTap,
   ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        height: 80,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.black.withOpacity(0.1),
               spreadRadius: 1,
-              blurRadius: 10,
+              blurRadius: 5,
               offset: const Offset(0, 2),
             ),
           ],
@@ -260,114 +269,21 @@ class DashboardTab extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Image.asset(
-                imagePath,
-                width: 40,
-                height: 40,
-                fit: BoxFit.contain,
-              ),
+            Image.asset(
+              imagePath,
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               title,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: Colors.grey.shade800,
               ),
               textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              style: GoogleFonts.poppins(
-                fontSize: 11,
-                color: Colors.grey.shade600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFeatureRow(
-    BuildContext context,
-    String title,
-    String subtitle,
-    String imagePath,
-    Color color,
-    VoidCallback onTap,
-  ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Image.asset(
-                imagePath,
-                width: 30,
-                height: 30,
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade800,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey.shade400,
-              size: 16,
             ),
           ],
         ),
@@ -391,35 +307,50 @@ class SkillsTab extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
+      body: Stack(
+        children: [
+          // Exact Skills design as background
+          Positioned.fill(
+            child: Image.asset(
               'pages assets/Skills.png',
-              width: 200,
-              height: 200,
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Skills Section',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
-              ),
+          ),
+          
+          // Overlay content
+          SafeArea(
+            child: Column(
+              children: [
+                // Back button
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                ),
+                
+                const Spacer(),
+                
+                // Bottom content
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    'Skills Development',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming Soon',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.grey.shade600,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -452,7 +383,7 @@ class JobsTab extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Jobs Section',
+              'Job Opportunities',
               style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -489,35 +420,50 @@ class ProfileTab extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
+      body: Stack(
+        children: [
+          // Exact Me design as background
+          Positioned.fill(
+            child: Image.asset(
               'pages assets/Me.png',
-              width: 200,
-              height: 200,
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Profile Section',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
-              ),
+          ),
+          
+          // Overlay content
+          SafeArea(
+            child: Column(
+              children: [
+                // Back button
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                ),
+                
+                const Spacer(),
+                
+                // Bottom content
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    'My Profile',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming Soon',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.grey.shade600,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
