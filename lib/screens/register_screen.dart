@@ -259,6 +259,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 													: Text('Register', style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
 											),
 										),
+										const SizedBox(height: 12),
+										Center(
+											child: TextButton(
+												onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+												child: Text('Continue as Guest', style: GoogleFonts.poppins(color: deepPurple, fontWeight: FontWeight.w600)),
+											),
+										),
 									],
 								),
 							),
