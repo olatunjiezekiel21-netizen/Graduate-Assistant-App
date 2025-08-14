@@ -61,9 +61,15 @@ class HomeScreen extends StatelessWidget {
                 right: 24,
                 child: Row(
                   children: [
-                    Icon(Icons.headphones, color: Colors.white, size: 28),
-                    const SizedBox(width: 16),
-                    Icon(Icons.notifications, color: Colors.white, size: 28),
+                    IconButton(
+                      icon: const Icon(Icons.headphones, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pushNamed(context, '/customer-care'),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.notifications, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pushNamed(context, '/updates'),
+                    ),
                   ],
                 ),
               ),
@@ -246,7 +252,19 @@ class HomeScreen extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
       ],
       onTap: (index) {
-        // Implement navigation if needed
+        switch (index) {
+          case 0:
+            break;
+          case 1:
+            Navigator.pushNamed(context, '/messages');
+            break;
+          case 2:
+            Navigator.pushNamed(context, '/updates');
+            break;
+          case 3:
+            Navigator.pushNamed(context, '/me');
+            break;
+        }
       },
     );
   }

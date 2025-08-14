@@ -15,6 +15,7 @@ import 'screens/updates_screen.dart';
 import 'screens/skills_select_screen_1.dart';
 import 'screens/skills_select_screen_2.dart';
 import 'screens/skills_select_screen_3.dart';
+import 'screens/user_screen.dart';
 import 'services/supabase_service.dart';
 
 void main() async {
@@ -67,16 +68,17 @@ class NewlyGraduateHub extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
         '/customer-care': (context) => const CustomerCareScreen(),
-        '/messages': (context) => const MessagesScreen(),
-        '/resume-builder': (context) => const ResumeBuilderScreen(),
-        '/updates': (context) => const UpdatesScreen(),
-        '/skills': (context) => const SkillsSelectScreen1(),
-        '/jobs': (context) => const JobsScreen(),
-        '/skill-progress': (context) => const SkillProgressScreen(),
-        '/tasks': (context) => const TasksScreen(),
-        '/masters-update': (context) => const MastersUpdateScreen(),
-        '/skills/select2': (context) => const SkillsSelectScreen2(),
-        '/skills/select3': (context) => const SkillsSelectScreen3(),
+                 '/messages': (context) => const MessagesScreen(),
+         '/resume-builder': (context) => const ResumeBuilderScreen(),
+         '/updates': (context) => const UpdatesScreen(),
+         '/skills': (context) => const SkillsSelectScreen1(),
+         '/jobs': (context) => const JobsScreen(),
+         '/skill-progress': (context) => const SkillProgressScreen(),
+         '/tasks': (context) => const TasksScreen(),
+         '/masters-update': (context) => const MastersUpdateScreen(),
+         '/skills/select2': (context) => const SkillsSelectScreen2(),
+         '/skills/select3': (context) => const SkillsSelectScreen3(),
+         '/me': (context) => const UserScreen(),
       },
     );
   }
