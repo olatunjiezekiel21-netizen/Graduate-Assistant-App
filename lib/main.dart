@@ -12,6 +12,9 @@ import 'screens/customer_care_screen.dart';
 import 'screens/messages_screen.dart';
 import 'screens/resume_builder_screen.dart';
 import 'screens/updates_screen.dart';
+import 'screens/skills_select_screen_1.dart';
+import 'screens/skills_select_screen_2.dart';
+import 'screens/skills_select_screen_3.dart';
 import 'services/supabase_service.dart';
 
 void main() async {
@@ -67,11 +70,13 @@ class NewlyGraduateHub extends StatelessWidget {
         '/messages': (context) => const MessagesScreen(),
         '/resume-builder': (context) => const ResumeBuilderScreen(),
         '/updates': (context) => const UpdatesScreen(),
-        '/skills': (context) => const SkillsScreen(),
+        '/skills': (context) => const SkillsSelectScreen1(),
         '/jobs': (context) => const JobsScreen(),
         '/skill-progress': (context) => const SkillProgressScreen(),
         '/tasks': (context) => const TasksScreen(),
         '/masters-update': (context) => const MastersUpdateScreen(),
+        '/skills/select2': (context) => const SkillsSelectScreen2(),
+        '/skills/select3': (context) => const SkillsSelectScreen3(),
       },
     );
   }
