@@ -1,13 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newly_graduate_hub/services/supabase_service.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final Color deepPurple = const Color(0xFF6C2786);
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
 
+class _RegisterScreenState extends State<RegisterScreen> {
+  final Color deepPurple = const Color(0xFF6C2786);
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Controllers
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _middleNameRightController = TextEditingController();
+  final TextEditingController _middleNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _ninController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  // Dropdown values
+  String? _selectedNationality;
+  String? _selectedSchool;
+  DateTime? _selectedDob;
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  bool _isSubmitting = false;
+
+  // Sample data (can be moved to a constants file or fetched later)
+  static const List<String> _nationalities = <String>[
+    'Nigeria',
+    'Ghana',
+    'Kenya',
+    'South Africa',
+    'United Kingdom',
+    'United States',
+  ];
+
+  static const List<String> _schools = <String>[
+    'Ladoke Akintola University of Technology (LAUTECH)',
+    'University of Lagos (UNILAG)',
+    'University of Ibadan (UI)',
+    'University of Nigeria (UNN)',
+    'Ahmadu Bello University (ABU Zaria)',
+    'Covenant University',
+    'Babcock University',
+    'Federal Polytechnic Offa',
+  ];
+
+  @override
+  void dispose() {
+    _surnameController.dispose();
+    _middleNameRightController.dispose();
+    _middleNameController.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _ninController.dispose();
+    _phoneController.dispose();
+    _dobController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -76,69 +141,227 @@ class RegisterScreen extends StatelessWidget {
             // Form fields
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Surname & Middle Name
-                  Row(
-                    children: [
-                      Expanded(child: _buildTextField('Surname')),
-                      const SizedBox(width: 12),
-                      Expanded(child: _buildTextField('Middle Name')),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Middle Name (again, if needed)
-                  _buildTextField('Middle Name'),
-                  const SizedBox(height: 16),
-                  // User Name
-                  _buildTextField('User Name'),
-                  const SizedBox(height: 16),
-                  // Nationality & Birth date
-                  Row(
-                    children: [
-                      Expanded(
-                          child: _buildDropdownField('Select Nationality')),
-                      const SizedBox(width: 12),
-                      Expanded(child: _buildDateField('01 / 11 / 2000')),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // School Attended & NIN NO.
-                  Row(
-                    children: [
-                      Expanded(child: _buildDropdownField('-select option-')),
-                      const SizedBox(width: 12),
-                      Expanded(child: _buildTextField('NIN NO.')),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Mobile Number with flag
-                  Text('Mobile Number',
-                      style: GoogleFonts.poppins(fontSize: 15)),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 48,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(8),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Surname & Middle Name (inline)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildTextFormField(
+                            controller: _surnameController,
+                            label: 'Surname',
+                            validator: _requireText,
+                          ),
                         ),
-                        child: Image.asset(
-                          'assets/pages_items/nigeria_flag.png',
-                          width: 24,
-                          height: 24,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildTextFormField(
+                            controller: _middleNameRightController,
+                            label: 'Middle Name',
+                            validator: _requireText,
+                          ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Middle Name (single per design)
+                    _buildTextFormField(
+                      controller: _middleNameController,
+                      label: 'Middle Name',
+                      validator: _requireText,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // User Name
+                    _buildTextFormField(
+                      controller: _usernameController,
+                      label: 'User Name',
+                      validator: _requireText,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Email
+                    _buildTextFormField(
+                      controller: _emailController,
+                      label: 'Email Address',
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Email is required';
+                        final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                        if (!emailRegex.hasMatch(v.trim())) return 'Enter a valid email';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Nationality & Birth date
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildNationalityDropdown(),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildDatePickerField(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // School Attended & NIN NO.
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildSchoolDropdown(),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildTextFormField(
+                            controller: _ninController,
+                            label: 'NIN NO.',
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'NIN is required';
+                              }
+                              final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                              if (digitsOnly.length < 8) {
+                                return 'Enter a valid NIN';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Mobile Number with flag-like leading box
+                    Text('Mobile Number', style: GoogleFonts.poppins(fontSize: 15)),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 48,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(width: 6, height: 18, color: const Color(0xFF0B8D19)),
+                              const SizedBox(width: 4),
+                              Container(width: 6, height: 18, color: const Color(0xFF0B8D19)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: _buildTextFormField(
+                            controller: _phoneController,
+                            label: '+234',
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Phone is required';
+                              }
+                              final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+                              if (digits.length < 10) {
+                                return 'Enter a valid phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Password and Confirm Password
+                    _buildTextFormField(
+                      controller: _passwordController,
+                      label: 'Create Password',
+                      obscureText: _obscurePassword,
+                      suffixIcon: IconButton(
+                        icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(child: _buildTextField('+234', prefix: false)),
-                    ],
-                  ),
-                  // Add more fields as needed...
-                ],
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Password is required';
+                        }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextFormField(
+                      controller: _confirmPasswordController,
+                      label: 'Re-enter Password',
+                      obscureText: _obscureConfirmPassword,
+                      suffixIcon: IconButton(
+                        icon: Icon(_obscureConfirmPassword ? Icons.visibility_off : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _obscureConfirmPassword = !_obscureConfirmPassword;
+                          });
+                        },
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please confirm your password';
+                        }
+                        if (value != _passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: deepPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: _isSubmitting ? null : _submitForm,
+                        child: _isSubmitting
+                            ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                              )
+                            : Text(
+                                'Register',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -147,56 +370,186 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String hint, {bool prefix = true}) {
-    return TextField(
+  String? _requireText(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'This field is required';
+    }
+    return null;
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String label,
+    String? Function(String?)? validator,
+    bool obscureText = false,
+    TextInputType? keyboardType,
+    Widget? suffixIcon,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      validator: validator,
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: label,
         hintStyle: GoogleFonts.poppins(fontSize: 15),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+        suffixIcon: suffixIcon,
       ),
     );
   }
 
-  Widget _buildDropdownField(String hint) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: null,
-          hint: Text(
-            hint,
-            style: GoogleFonts.poppins(fontSize: 15, color: Colors.black54),
-          ),
-          items: [],
-          onChanged: (value) {},
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDateField(String date) {
-    return TextField(
-      enabled: false,
+  Widget _buildNationalityDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedNationality,
       decoration: InputDecoration(
-        hintText: date,
+        hintText: 'Select Nationality',
         hintStyle: GoogleFonts.poppins(fontSize: 15, color: Colors.black54),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        suffixIcon: Icon(Icons.calendar_today, size: 20),
       ),
+      items: _nationalities
+          .map((nation) => DropdownMenuItem<String>(
+                value: nation,
+                child: Text(nation, style: GoogleFonts.poppins(fontSize: 14)),
+              ))
+          .toList(),
+      onChanged: (value) => setState(() => _selectedNationality = value),
+      validator: (value) => value == null ? 'Select nationality' : null,
     );
+  }
+
+  Widget _buildSchoolDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedSchool,
+      decoration: InputDecoration(
+        hintText: '-select option-',
+        hintStyle: GoogleFonts.poppins(fontSize: 15, color: Colors.black54),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      items: _schools
+          .map((school) => DropdownMenuItem<String>(
+                value: school,
+                child: Text(school, style: GoogleFonts.poppins(fontSize: 14)),
+              ))
+          .toList(),
+      onChanged: (value) => setState(() => _selectedSchool = value),
+      validator: (value) => value == null ? 'Select school' : null,
+    );
+  }
+
+  Widget _buildDatePickerField() {
+    return TextFormField(
+      controller: _dobController,
+      readOnly: true,
+      decoration: InputDecoration(
+        hintText: _dobController.text.isEmpty ? '01 / 11 / 2000' : _dobController.text,
+        hintStyle: GoogleFonts.poppins(fontSize: 15, color: Colors.black54),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.calendar_today, size: 20),
+          onPressed: _pickDob,
+        ),
+      ),
+      validator: (value) {
+        if (_selectedDob == null) {
+          return 'Select date of birth';
+        }
+        final sixteenYearsAgo = DateTime(DateTime.now().year - 16, DateTime.now().month, DateTime.now().day);
+        if (_selectedDob!.isAfter(sixteenYearsAgo)) {
+          return 'Must be at least 16 years old';
+        }
+        return null;
+      },
+    );
+  }
+
+  Future<void> _pickDob() async {
+    final DateTime today = DateTime.now();
+    final DateTime initial = DateTime(today.year - 24, today.month, today.day);
+    final DateTime first = DateTime(today.year - 80, 1, 1);
+
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDob ?? initial,
+      firstDate: first,
+      lastDate: today,
+      helpText: 'Select date of birth',
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(primary: deepPurple),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      setState(() {
+        _selectedDob = picked;
+        _dobController.text = _formatDate(picked);
+      });
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    final String dd = date.day.toString().padLeft(2, '0');
+    final String mm = date.month.toString().padLeft(2, '0');
+    final String yyyy = date.year.toString();
+    return '$dd / $mm / $yyyy';
+  }
+
+  Future<void> _submitForm() async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState?.validate() != true) return;
+
+    setState(() => _isSubmitting = true);
+
+    final String fullName = _surnameController.text.trim();
+
+    final bool ok = await SupabaseService().signUp(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      name: fullName.isEmpty ? _usernameController.text.trim() : fullName,
+      phone: _phoneController.text.trim(),
+      gender: 'N/A',
+      university: _selectedSchool ?? 'N/A',
+      graduationYear: _selectedDob?.year.toString() ?? 'N/A',
+      course: 'N/A',
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isSubmitting = false);
+
+    if (ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration successful! Please log in.', style: GoogleFonts.poppins(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration failed. Check Supabase config.', style: GoogleFonts.poppins(color: Colors.white)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
 

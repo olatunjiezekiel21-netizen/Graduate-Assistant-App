@@ -12,34 +12,34 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [
-    ChatMessage(
-      text: 'Hello! Welcome to Newly Graduate Hub. How can I help you today?',
-      isMe: false,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
-      senderName: 'Career Advisor',
-      senderAvatar: 'pages assets/Messages.png',
-    ),
-    ChatMessage(
-      text: 'Hi! I\'m looking for guidance on building my resume.',
-      isMe: true,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 4)),
-      senderName: 'You',
-      senderAvatar: 'pages assets/Me.png',
-    ),
+        ChatMessage(
+       text: 'Hello! Welcome to Newly Graduate Hub. How can I help you today?',
+       isMe: false,
+       timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
+       senderName: 'Career Advisor',
+       senderAvatar: 'assets/pages_items/customer_care.png',
+     ),
+        ChatMessage(
+       text: 'Hi! I\'m looking for guidance on building my resume.',
+       isMe: true,
+       timestamp: DateTime.now().subtract(const Duration(minutes: 4)),
+       senderName: 'You',
+       senderAvatar: 'assets/pages_items/register.png',
+     ),
     ChatMessage(
       text: 'Great! I can help you with that. What\'s your field of study?',
       isMe: false,
       timestamp: DateTime.now().subtract(const Duration(minutes: 3)),
       senderName: 'Career Advisor',
-      senderAvatar: 'pages assets/Messages.png',
+      senderAvatar: 'assets/pages_items/customer_care.png',
     ),
-    ChatMessage(
-      text: 'I studied Computer Science and graduated last year.',
-      isMe: true,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
-      senderName: 'You',
-      senderAvatar: 'pages assets/Me.png',
-    ),
+        ChatMessage(
+       text: 'I studied Computer Science and graduated last year.',
+       isMe: true,
+       timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
+       senderName: 'You',
+       senderAvatar: 'assets/pages_items/register.png',
+     ),
     ChatMessage(
       text: 'Perfect! I\'ll send you some resume templates and tips specifically for CS graduates.',
       isMe: false,
@@ -58,15 +58,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
   void _sendMessage() {
     if (_messageController.text.trim().isNotEmpty) {
       setState(() {
-        _messages.add(
-          ChatMessage(
-            text: _messageController.text.trim(),
-            isMe: true,
-            timestamp: DateTime.now(),
-            senderName: 'You',
-            senderAvatar: 'pages assets/Me.png',
-          ),
-        );
+                    _messages.add(
+              ChatMessage(
+                text: _messageController.text.trim(),
+                isMe: true,
+                timestamp: DateTime.now(),
+                senderName: 'You',
+                senderAvatar: 'assets/pages_items/register.png',
+              ),
+            );
       });
       _messageController.clear();
       
@@ -75,13 +75,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
         if (mounted) {
           setState(() {
             _messages.add(
-              ChatMessage(
-                text: 'Thanks for your message! I\'ll get back to you soon with detailed guidance.',
-                isMe: false,
-                timestamp: DateTime.now(),
-                senderName: 'Career Advisor',
-                senderAvatar: 'pages assets/Messages.png',
-              ),
+                  ChatMessage(
+       text: 'Thanks for your message! I\'ll get back to you soon with detailed guidance.',
+       isMe: false,
+       timestamp: DateTime.now(),
+       senderName: 'Career Advisor',
+       senderAvatar: 'assets/pages_items/customer_care.png',
+     ),
             );
           });
         }
@@ -100,7 +100,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               radius: 20,
               backgroundColor: Colors.blue.shade100,
               child: Image.asset(
-                'pages assets/Messages.png',
+                'assets/pages_items/customer_care.png',
                 width: 30,
                 height: 30,
                 fit: BoxFit.cover,
@@ -164,12 +164,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     color: Colors.blue.shade100,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Image.asset(
-                    'pages assets/Speakerphone.png',
-                    width: 30,
-                    height: 30,
-                    fit: BoxFit.contain,
-                  ),
+                                child: Icon(
+                Icons.campaign,
+                size: 28,
+                color: Colors.blue.shade700,
+              ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -271,7 +270,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 message.senderAvatar,
                 width: 20,
                 height: 20,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
             const SizedBox(width: 8),
@@ -332,7 +331,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 message.senderAvatar,
                 width: 20,
                 height: 20,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
           ],

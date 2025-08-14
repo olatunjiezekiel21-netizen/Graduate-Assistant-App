@@ -262,3 +262,22 @@ This project is part of the Newly Graduate Hub platform.
 **🎉 Your Newly Graduate Hub web app is ready to use!**
 
 Access it at: http://localhost:8080
+
+## Netlify Deployment (Flutter Web)
+
+1. Ensure Flutter SDK is available in your CI or local machine.
+2. Update Supabase keys in `lib/services/supabase_service.dart`.
+3. Build web output:
+```bash
+flutter build web
+```
+4. Deploy to Netlify:
+- Drag and drop the `build/web` folder in Netlify UI, or
+- Connect repo and set build command `flutter build web` and publish directory `build/web`.
+5. Make sure routing works:
+- `_redirects` and `netlify.toml` are included to route all paths to `/index.html`.
+
+## Supabase Setup
+- In `lib/services/supabase_service.dart`, set `YOUR_SUPABASE_URL` and `YOUR_SUPABASE_ANON_KEY`.
+- Create `profiles` table as described in README.
+- Optionally create RLS policies to allow insert on signup for authenticated users.

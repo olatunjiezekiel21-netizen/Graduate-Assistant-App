@@ -12,6 +12,10 @@ import 'screens/customer_care_screen.dart';
 import 'screens/messages_screen.dart';
 import 'screens/resume_builder_screen.dart';
 import 'screens/updates_screen.dart';
+import 'screens/skills_select_screen_1.dart';
+import 'screens/skills_select_screen_2.dart';
+import 'screens/skills_select_screen_3.dart';
+import 'screens/user_screen.dart';
 import 'services/supabase_service.dart';
 
 void main() async {
@@ -64,14 +68,17 @@ class NewlyGraduateHub extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
         '/customer-care': (context) => const CustomerCareScreen(),
-        '/messages': (context) => const MessagesScreen(),
-        '/resume-builder': (context) => const ResumeBuilderScreen(),
-        '/updates': (context) => const UpdatesScreen(),
-        '/skills': (context) => const SkillsScreen(),
-        '/jobs': (context) => const JobsScreen(),
-        '/skill-progress': (context) => const SkillProgressScreen(),
-        '/tasks': (context) => const TasksScreen(),
-        '/masters-update': (context) => const MastersUpdateScreen(),
+                 '/messages': (context) => const MessagesScreen(),
+         '/resume-builder': (context) => const ResumeBuilderScreen(),
+         '/updates': (context) => const UpdatesScreen(),
+         '/skills': (context) => const SkillsSelectScreen1(),
+         '/jobs': (context) => const JobsScreen(),
+         '/skill-progress': (context) => const SkillProgressScreen(),
+         '/tasks': (context) => const TasksScreen(),
+         '/masters-update': (context) => const MastersUpdateScreen(),
+         '/skills/select2': (context) => const SkillsSelectScreen2(),
+         '/skills/select3': (context) => const SkillsSelectScreen3(),
+         '/me': (context) => const UserScreen(),
       },
     );
   }
@@ -155,7 +162,7 @@ class JobsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/job_task.png',
+              'assets/pages_items/job.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -261,7 +268,7 @@ class TasksScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/task.png',
+              'assets/pages_items/task.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,

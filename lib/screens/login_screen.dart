@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                   top: 32,
                   right: 32,
                   child: Image.asset(
-                    'assets/pages_items/login_shield.png', // Use your shield/check icon here
+                    'assets/pages_items/register.png',
                     width: 120,
                     height: 120,
                   ),

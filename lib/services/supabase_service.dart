@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class SupabaseService {
-  static const String _supabaseUrl = 'YOUR_SUPABASE_URL';
-  static const String _supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+  static const String _supabaseUrl = 'https://dvscnclorvsrhkiurlpt.supabase.co';
+  static const String _supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c2NuY2xvcnZzcmhraXVybHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNTk0NDYsImV4cCI6MjA3MDczNTQ0Nn0.LfMdRX-QSeDmeEEyCcb5lI7juh_ylHCjQ3HCDXj1UOQ';
   
   late SupabaseClient _supabase;
 

@@ -50,7 +50,7 @@ class UserScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 48,
                         backgroundImage: AssetImage(
-                            'assets/pages/items/profile_avatar.png'), // Replace with your asset
+                            'assets/pages_items/register.png'), // Replace with your asset
                       ),
                       const SizedBox(height: 8),
                       Text(
