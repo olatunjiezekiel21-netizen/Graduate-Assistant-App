@@ -40,17 +40,5 @@ flutter:
     - assets/pages_items/task.png
     - assets/pages_items/masters.png
     - assets/pages_items/job.png
-    # Design assets under "pages assets"
-    - pages assets/Bell.png
-    - pages assets/Customer care (1).png
-    - pages assets/Messages.png
-    - pages assets/Me.png
-    - pages assets/Rectangle 49.png
-    - pages assets/Rectangle 42.png
-    - pages assets/Rectangle 43.png
-    - pages assets/UserCircle.png
-    - pages assets/Skills.png
-    - pages assets/updates.png
-    - pages assets/nysc logo.png
-    - pages assets/job task.png
-    - pages assets/Post (1).png
+    # Include the entire design assets folder (handles spaces/parentheses nicely)
+    - pages assets/
