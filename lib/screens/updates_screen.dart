@@ -127,7 +127,7 @@ class _UpdatesScreenState extends State<UpdatesScreen> {
                   height: 100,
                   margin: const EdgeInsets.all(20),
                   child: Image.asset(
-                    'pages assets/updates.png',
+                    'assets/pages_items/task.png',
                     fit: BoxFit.contain,
                   ),
                 ),

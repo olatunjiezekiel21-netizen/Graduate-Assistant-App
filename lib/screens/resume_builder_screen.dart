@@ -83,7 +83,7 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    'pages assets/Resume Buider (1).png',
+                    'assets/pages_items/resume.png',
                     fit: BoxFit.cover,
                   ),
                 ),

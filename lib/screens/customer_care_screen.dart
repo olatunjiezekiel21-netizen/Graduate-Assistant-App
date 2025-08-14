@@ -111,7 +111,7 @@ class _CustomerCareScreenState extends State<CustomerCareScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    'pages assets/Customer care (1).png',
+                    'assets/pages_items/customer_care.png',
                     fit: BoxFit.cover,
                   ),
                 ),

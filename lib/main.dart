@@ -155,7 +155,7 @@ class JobsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/job_task.png',
+              'assets/pages_items/job.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -261,7 +261,7 @@ class TasksScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/task.png',
+              'assets/pages_items/task.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,

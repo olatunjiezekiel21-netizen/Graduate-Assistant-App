@@ -96,16 +96,22 @@ class HomeScreen extends StatelessWidget {
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   children: [
-                    _buildGridItem('assets/pages_items/nysc_logo.png',
-                        'Nysc Reg.\nGuidelines'),
-                    _buildGridItem(
-                        'assets/pages_items/resume.png', 'Resume Builder'),
-                    _buildGridItem(
-                        'assets/pages_items/task.png', 'Acquire Skill'),
-                    _buildGridItem('assets/pages_items/masters.png',
-                        'Masters Update'),
-                    _buildGridItem(
-                        'assets/preloader_assets/job.png', 'Job Offer'),
+                    _buildGridItem(context, 'assets/pages_items/nysc_logo.png',
+                        'Nysc Reg.\nGuidelines', onTap: () {
+                      // TODO: Implement NYSC Guidelines screen
+                    }),
+                    _buildGridItem(context,
+                        'assets/pages_items/resume.png', 'Resume Builder',
+                        onTap: () => Navigator.pushNamed(context, '/resume-builder')),
+                    _buildGridItem(context,
+                        'assets/pages_items/task.png', 'Acquire Skill',
+                        onTap: () => Navigator.pushNamed(context, '/skills')),
+                    _buildGridItem(context, 'assets/pages_items/masters.png',
+                        'Masters Update',
+                        onTap: () => Navigator.pushNamed(context, '/masters-update')),
+                    _buildGridItem(context,
+                        'assets/pages_items/job.png', 'Job Offer',
+                        onTap: () => Navigator.pushNamed(context, '/jobs')),
                     _buildArrowItem(),
                   ],
                 ),
@@ -136,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                                          leading: Image.asset(
+                    leading: Image.asset(
                       'assets/pages_items/job.png',
                       width: 48,
                       height: 48,
@@ -166,39 +172,42 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGridItem(String asset, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                blurRadius: 4,
-                spreadRadius: 1,
-              ),
-            ],
+  Widget _buildGridItem(BuildContext context, String asset, String label, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 4,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(asset, fit: BoxFit.contain),
+            ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(asset, fit: BoxFit.contain),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
