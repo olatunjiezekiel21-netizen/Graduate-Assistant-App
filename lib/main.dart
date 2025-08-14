@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'screens/preloader_screen_1.dart';
 import 'screens/preloader_screen_2.dart';
 import 'screens/preloader_screen_3.dart';
@@ -12,6 +13,7 @@ import 'screens/customer_care_screen.dart';
 import 'screens/messages_screen.dart';
 import 'screens/resume_builder_screen.dart';
 import 'screens/updates_screen.dart';
+import 'screens/user_screen.dart';
 import 'services/supabase_service.dart';
 
 void main() async {
@@ -72,24 +74,52 @@ class NewlyGraduateHub extends StatelessWidget {
         '/skill-progress': (context) => const SkillProgressScreen(),
         '/tasks': (context) => const TasksScreen(),
         '/masters-update': (context) => const MastersUpdateScreen(),
+        '/me': (context) => const UserScreen(),
       },
     );
   }
 }
 
-// Placeholder screens for navigation
+// Skills screen with YouTube links
 class SkillsScreen extends StatelessWidget {
   const SkillsScreen({super.key});
 
+  Future<void> _open(String url) async {
+    final uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Color deepPurple = const Color(0xFF6C2786);
+
+    final Map<String, List<Map<String, String>>> catalog = {
+      'Flutter & Dart': [
+        {'Flutter Crash Course': 'https://www.youtube.com/watch?v=VPvVD8t02U8'},
+        {'Dart in 100 minutes': 'https://www.youtube.com/watch?v=Ej_Pcr4uC2Q'},
+      ],
+      'Frontend (HTML/CSS/JS/React)': [
+        {'HTML & CSS Full Course': 'https://www.youtube.com/watch?v=G3e-cpL7ofc'},
+        {'JavaScript Full Course': 'https://www.youtube.com/watch?v=HdJ6f1A7A-8'},
+        {'React for Beginners': 'https://www.youtube.com/watch?v=SqcY0GlETPk'},
+      ],
+      'Backend (Node.js/Python)': [
+        {'Node.js API Tutorial': 'https://www.youtube.com/watch?v=Oe421EPjeBE'},
+        {'Django for Beginners': 'https://www.youtube.com/watch?v=F5mRW0jo-U4'},
+      ],
+      'UI/UX (Figma)': [
+        {'Figma UI Design Tutorial': 'https://www.youtube.com/watch?v=jk1T0CdLxwU'},
+      ],
+      'Data (Python/SQL)': [
+        {'Python for Data Analysis': 'https://www.youtube.com/watch?v=_uQrJ0TkZlc'},
+        {'SQL Tutorial': 'https://www.youtube.com/watch?v=HXV3zeQKqGY'},
+      ],
+    };
+
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: Text(
-          'Skills',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
+        title: Text('Acquire Skill', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
@@ -97,35 +127,38 @@ class SkillsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/pages/items/skills.png',
-              width: 200,
-              height: 200,
-              fit: BoxFit.contain,
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: catalog.length,
+        itemBuilder: (context, index) {
+          final String category = catalog.keys.elementAt(index);
+          final List<Map<String, String>> links = catalog[category]!;
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 2))],
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Skills Development',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(category, style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600, color: deepPurple)),
+                const SizedBox(height: 8),
+                for (final m in links)
+                  ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.play_circle_fill, color: Colors.redAccent),
+                    title: Text(m.keys.first, style: GoogleFonts.poppins(fontSize: 14)),
+                    trailing: const Icon(Icons.open_in_new, size: 18),
+                    onTap: () => _open(m.values.first),
+                  ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming Soon',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.grey.shade600,
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -155,7 +188,7 @@ class JobsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/job_task.png',
+              'assets/pages_items/job.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -208,7 +241,7 @@ class SkillProgressScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/skill_progress.png',
+              'assets/pages_items/task.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -261,7 +294,7 @@ class TasksScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/task.png',
+              'assets/pages_items/task.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -314,7 +347,7 @@ class MastersUpdateScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/pages/items/masters_update.png',
+              'assets/pages_items/masters.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
