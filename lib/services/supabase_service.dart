@@ -1,10 +1,11 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:typed_data';
 
 class SupabaseService {
-  static const String _supabaseUrl = 'YOUR_SUPABASE_URL';
-  static const String _supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+  static const String _supabaseUrl = 'https://dvscnclorvsrhkiurlpt.supabase.co';
+  static const String _supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c2NuY2xvcnZzcmhraXVybHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUxNTk0NDYsImV4cCI6MjA3MDczNTQ0Nn0.LfMdRX-QSeDmeEEyCcb5lI7juh_ylHCjQ3HCDXj1UOQ';
   
   late SupabaseClient _supabase;
 
@@ -131,6 +132,18 @@ class SupabaseService {
       return imageUrl;
     } catch (e) {
       print('Update profile image error: $e');
+      return null;
+    }
+  }
+
+  Future<String?> uploadAvatarBytes(Uint8List data, String storagePath, {String contentType = 'image/png'}) async {
+    try {
+      final bucket = _supabase.storage.from('avatars');
+      await bucket.uploadBinary(storagePath, data, fileOptions: FileOptions(upsert: true, contentType: contentType));
+      final publicUrl = bucket.getPublicUrl(storagePath);
+      return publicUrl;
+    } catch (e) {
+      print('Upload avatar error: $e');
       return null;
     }
   }

@@ -1,13 +1,59 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:newly_graduate_hub/services/supabase_service.dart';
 
-class UserScreen extends StatelessWidget {
+class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final Color deepPurple = const Color(0xFF6C2786);
+  State<UserScreen> createState() => _UserScreenState();
+}
 
+class _UserScreenState extends State<UserScreen> {
+  final Color deepPurple = const Color(0xFF6C2786);
+  String? _avatarUrl;
+  bool _isUploading = false;
+
+  Future<void> _changeAvatar() async {
+    try {
+      final picker = ImagePicker();
+      final XFile? picked = await picker.pickImage(source: ImageSource.gallery, maxWidth: 512);
+      if (picked == null) return;
+      setState(() => _isUploading = true);
+      final Uint8List data = await picked.readAsBytes();
+
+      final user = SupabaseService().getCurrentUser();
+      final String path = user != null
+          ? 'avatars/${user.id}.png'
+          : 'avatars/guest_${DateTime.now().millisecondsSinceEpoch}.png';
+
+      final String? publicUrl = await SupabaseService().uploadAvatarBytes(data, path, contentType: 'image/png');
+      if (!mounted) return;
+      setState(() {
+        _avatarUrl = publicUrl;
+        _isUploading = false;
+      });
+
+      if (user != null && publicUrl != null) {
+        await SupabaseService().updateProfileImage(user.id, publicUrl);
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile image updated', style: GoogleFonts.poppins(color: Colors.white)), backgroundColor: deepPurple),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isUploading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update image', style: GoogleFonts.poppins(color: Colors.white)), backgroundColor: Colors.red),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -48,10 +94,32 @@ class UserScreen extends StatelessWidget {
                   right: 0,
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 48,
-                        backgroundColor: Colors.white,
-                        child: Image.asset('pages assets/UserCircle.png', width: 56, height: 56),
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          CircleAvatar(
+                            radius: 48,
+                            backgroundColor: Colors.white,
+                            backgroundImage: _avatarUrl != null ? NetworkImage(_avatarUrl!) : null,
+                            child: _avatarUrl == null
+                                ? Image.asset('pages assets/UserCircle.png', width: 56, height: 56)
+                                : null,
+                          ),
+                          InkWell(
+                            onTap: _isUploading ? null : _changeAvatar,
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                              child: _isUploading
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(6),
+                                      child: CircularProgressIndicator(strokeWidth: 2),
+                                    )
+                                  : const Icon(Icons.camera_alt, size: 18, color: Colors.black54),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -161,32 +229,35 @@ class UserScreen extends StatelessWidget {
   }
 
   Widget _buildBottomNavBar(BuildContext context, Color deepPurple) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: deepPurple,
-      unselectedItemColor: Colors.grey,
-      currentIndex: 3,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
-        BottomNavigationBarItem(icon: Icon(Icons.campaign), label: 'Updates'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
-      ],
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacementNamed(context, '/home');
-            break;
-          case 1:
-            Navigator.pushReplacementNamed(context, '/messages');
-            break;
-          case 2:
-            Navigator.pushReplacementNamed(context, '/updates');
-            break;
-          case 3:
-            break;
-        }
-      },
+    return Container(
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, -2))]),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: deepPurple,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 3,
+        items: [
+          BottomNavigationBarItem(icon: Image.asset('pages assets/Home (1).png', width: 22, height: 22), label: 'Home'),
+          BottomNavigationBarItem(icon: Image.asset('pages assets/Annotation.png', width: 22, height: 22), label: 'Messages'),
+          BottomNavigationBarItem(icon: Image.asset('pages assets/Speakerphone.png', width: 22, height: 22), label: 'Updates'),
+          BottomNavigationBarItem(icon: Image.asset('pages assets/UserCircle.png', width: 22, height: 22), label: 'Me'),
+        ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(context, '/messages');
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(context, '/updates');
+              break;
+            case 3:
+              break;
+          }
+        },
+      ),
     );
   }
 }
