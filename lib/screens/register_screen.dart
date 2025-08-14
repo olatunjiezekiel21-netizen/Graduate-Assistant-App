@@ -16,7 +16,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 	// Controllers
 	final TextEditingController _surnameController = TextEditingController();
-	final TextEditingController _middleNameRightController = TextEditingController();
 	final TextEditingController _middleNameController = TextEditingController();
 	final TextEditingController _usernameController = TextEditingController();
 	final TextEditingController _emailController = TextEditingController();
@@ -54,7 +53,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 	@override
 	void dispose() {
 		_surnameController.dispose();
-		_middleNameRightController.dispose();
 		_middleNameController.dispose();
 		_usernameController.dispose();
 		_emailController.dispose();
@@ -123,16 +121,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
 								child: Column(
 									crossAxisAlignment: CrossAxisAlignment.start,
 									children: [
-										Row(children: [
-											Expanded(child: _buildTextFormField(controller: _surnameController, label: 'Surname', validator: _requireText)),
-											const SizedBox(width: 12),
-											Expanded(child: _buildTextFormField(controller: _middleNameRightController, label: 'Middle Name', validator: _requireText)),
-										]),
+										// Row: Surname + Middle Name
+										Row(
+											children: [
+												Expanded(child: _buildTextFormField(controller: _surnameController, label: 'Surname', validator: _requireText)),
+												const SizedBox(width: 12),
+												Expanded(child: _buildTextFormField(controller: _middleNameController, label: 'Middle Name', validator: _requireText)),
+											],
+										),
 										const SizedBox(height: 16),
-										_buildTextFormField(controller: _middleNameController, label: 'Middle Name', validator: _requireText),
-										const SizedBox(height: 16),
+
+										// Username
 										_buildTextFormField(controller: _usernameController, label: 'User Name', validator: _requireText),
 										const SizedBox(height: 16),
+
+										// Email
 										_buildTextFormField(
 											controller: _emailController,
 											label: 'Email Address',
@@ -146,49 +149,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
 										),
 										const SizedBox(height: 16),
 
-										Row(children: [
-											Expanded(child: _buildNationalityDropdown()),
-											const SizedBox(width: 12),
-											Expanded(child: _buildDatePickerField()),
-										]),
+										// Nationality + DOB
+										Row(
+											children: [
+												Expanded(child: _buildNationalityDropdown()),
+												const SizedBox(width: 12),
+												Expanded(child: _buildDatePickerField()),
+											],
+										),
 										const SizedBox(height: 16),
 
-										Row(children: [
-											Expanded(child: _buildSchoolDropdown()),
-											const SizedBox(width: 12),
-											Expanded(child: _buildTextFormField(controller: _ninController, label: 'NIN NO.', keyboardType: TextInputType.number, validator: (v) {
-												if (v == null || v.trim().isEmpty) return 'NIN is required';
-												final digitsOnly = v.replaceAll(RegExp(r'[^0-9]'), '');
-												if (digitsOnly.length < 8) return 'Enter a valid NIN';
-												return null;
-											})),
-										]),
+										// School + NIN
+										Row(
+											children: [
+												Expanded(child: _buildSchoolDropdown()),
+												const SizedBox(width: 12),
+												Expanded(
+													child: _buildTextFormField(
+														controller: _ninController,
+														label: 'NIN NO.',
+														keyboardType: TextInputType.number,
+														validator: (v) {
+															if (v == null || v.trim().isEmpty) return 'NIN is required';
+															final digitsOnly = v.replaceAll(RegExp(r'[^0-9]'), '');
+															if (digitsOnly.length < 8) return 'Enter a valid NIN';
+															return null;
+														},
+													),
+												),
+											],
+										),
 										const SizedBox(height: 16),
 
+										// Phone
 										Text('Mobile Number', style: GoogleFonts.poppins(fontSize: 15)),
 										const SizedBox(height: 8),
-										Row(children: [
-											Container(
-												width: 40,
-												height: 48,
-												alignment: Alignment.center,
-												decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(8)),
-												child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-													Container(width: 6, height: 18, color: const Color(0xFF0B8D19)),
-													const SizedBox(width: 4),
-													Container(width: 6, height: 18, color: const Color(0xFF0B8D19)),
-												]),
-											),
-											const SizedBox(width: 8),
-											Expanded(child: _buildTextFormField(controller: _phoneController, label: '+234', keyboardType: TextInputType.phone, validator: (v) {
-												if (v == null || v.trim().isEmpty) return 'Phone is required';
-												final digits = v.replaceAll(RegExp(r'[^0-9]'), '');
-												if (digits.length < 10) return 'Enter a valid phone number';
-												return null;
-											})),
-										]),
+										Row(
+											children: [
+												Container(
+													width: 40,
+													height: 48,
+													alignment: Alignment.center,
+													decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300), borderRadius: BorderRadius.circular(8)),
+													child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+														Container(width: 6, height: 18, color: const Color(0xFF0B8D19)),
+														const SizedBox(width: 4),
+														Container(width: 6, height: 18, color: const Color(0xFF0B8D19)),
+													]),
+												),
+												const SizedBox(width: 8),
+												Expanded(
+													child: _buildTextFormField(
+														controller: _phoneController,
+														label: '+234',
+														keyboardType: TextInputType.phone,
+														validator: (v) {
+															if (v == null || v.trim().isEmpty) return 'Phone is required';
+															final digits = v.replaceAll(RegExp(r'[^0-9]'), '');
+															if (digits.length < 10) return 'Enter a valid phone number';
+															return null;
+														},
+													),
+												),
+											],
+										),
 										const SizedBox(height: 16),
 
+										// Passwords
 										_buildTextFormField(
 											controller: _passwordController,
 											label: 'Create Password',
@@ -220,6 +247,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 										),
 										const SizedBox(height: 24),
 
+										// Submit
 										SizedBox(
 											width: double.infinity,
 											height: 50,
@@ -231,8 +259,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 													: Text('Register', style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
 											),
 										),
-								],
-							),
+									],
+								),
 							),
 						),
 					],
@@ -303,6 +331,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 		return TextFormField(
 			controller: _dobController,
 			readOnly: true,
+			onTap: _pickDob,
 			decoration: InputDecoration(
 				hintText: _dobController.text.isEmpty ? '01 / 11 / 2000' : _dobController.text,
 				hintStyle: GoogleFonts.poppins(fontSize: 15, color: Colors.black54),
