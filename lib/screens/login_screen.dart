@@ -223,6 +223,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 12),
+                    Center(
+                      child: TextButton(
+                        onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+                        child: Text(
+                          'Continue as Guest',
+                          style: GoogleFonts.poppins(color: deepPurple, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 32),
                   ],
                 ),

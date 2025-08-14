@@ -61,9 +61,15 @@ class HomeScreen extends StatelessWidget {
                 right: 24,
                 child: Row(
                   children: [
-                    Icon(Icons.headphones, color: Colors.white, size: 28),
-                    const SizedBox(width: 16),
-                    Icon(Icons.notifications, color: Colors.white, size: 28),
+                    IconButton(
+                      icon: const Icon(Icons.headphones, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pushNamed(context, '/customer-care'),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.notifications, color: Colors.white, size: 28),
+                      onPressed: () => Navigator.pushNamed(context, '/updates'),
+                    ),
                   ],
                 ),
               ),
@@ -96,16 +102,26 @@ class HomeScreen extends StatelessWidget {
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   children: [
-                    _buildGridItem('assets/preloader_assets/nysc.png',
-                        'Nysc Reg.\nGuidelines'),
-                    _buildGridItem(
-                        'assets/preloader_assets/resume.png', 'Resume Builder'),
-                    _buildGridItem(
-                        'assets/preloader_assets/task.png', 'Acquire Skill'),
-                    _buildGridItem('assets/preloader_assets/masters.png',
-                        'Masters Upadate'),
-                    _buildGridItem(
-                        'assets/preloader_assets/job.png', 'Job Offer'),
+                    GestureDetector(
+                      onTap: () {},
+                      child: _buildGridItem('assets/preloader_assets/nysc.png', 'Nysc Reg.\nGuidelines'),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/resume-builder'),
+                      child: _buildGridItem('assets/preloader_assets/resume.png', 'Resume Builder'),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/skills'),
+                      child: _buildGridItem('assets/preloader_assets/task.png', 'Acquire Skill'),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/masters-update'),
+                      child: _buildGridItem('assets/preloader_assets/masters.png', 'Masters Upadate'),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, '/jobs'),
+                      child: _buildGridItem('assets/preloader_assets/job.png', 'Job Offer'),
+                    ),
                     _buildArrowItem(),
                   ],
                 ),
@@ -237,7 +253,19 @@ class HomeScreen extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
       ],
       onTap: (index) {
-        // Implement navigation if needed
+        switch (index) {
+          case 0:
+            break;
+          case 1:
+            Navigator.pushNamed(context, '/messages');
+            break;
+          case 2:
+            Navigator.pushNamed(context, '/updates');
+            break;
+          case 3:
+            Navigator.pushNamed(context, '/me');
+            break;
+        }
       },
     );
   }
