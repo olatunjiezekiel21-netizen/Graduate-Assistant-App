@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newly_graduate_hub/services/supabase_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _middleNameRightController = TextEditingController();
   final TextEditingController _middleNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _ninController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
@@ -31,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _isSubmitting = false;
 
   // Sample data (can be moved to a constants file or fetched later)
   static const List<String> _nationalities = <String>[
@@ -59,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _middleNameRightController.dispose();
     _middleNameController.dispose();
     _usernameController.dispose();
+    _emailController.dispose();
     _ninController.dispose();
     _phoneController.dispose();
     _dobController.dispose();
@@ -177,6 +181,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: _usernameController,
                       label: 'User Name',
                       validator: _requireText,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Email
+                    _buildTextFormField(
+                      controller: _emailController,
+                      label: 'Email Address',
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Email is required';
+                        final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                        if (!emailRegex.hasMatch(v.trim())) return 'Enter a valid email';
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 16),
 
@@ -325,15 +343,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           elevation: 0,
                         ),
-                        onPressed: _submitForm,
-                        child: Text(
-                          'Register',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
+                        onPressed: _isSubmitting ? null : _submitForm,
+                        child: _isSubmitting
+                            ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                              )
+                            : Text(
+                                'Register',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
                       ),
                     ),
                   ],
@@ -487,19 +511,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return '$dd / $mm / $yyyy';
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState?.validate() != true) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Registration details are valid. Implement backend next.',
-          style: GoogleFonts.poppins(color: Colors.white),
-        ),
-        backgroundColor: deepPurple,
-      ),
+    setState(() => _isSubmitting = true);
+
+    final String fullName = _surnameController.text.trim();
+
+    final bool ok = await SupabaseService().signUp(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      name: fullName.isEmpty ? _usernameController.text.trim() : fullName,
+      phone: _phoneController.text.trim(),
+      gender: 'N/A',
+      university: _selectedSchool ?? 'N/A',
+      graduationYear: _selectedDob?.year.toString() ?? 'N/A',
+      course: 'N/A',
     );
+
+    if (!mounted) return;
+
+    setState(() => _isSubmitting = false);
+
+    if (ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration successful! Please log in.', style: GoogleFonts.poppins(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Registration failed. Check Supabase config.', style: GoogleFonts.poppins(color: Colors.white)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
 

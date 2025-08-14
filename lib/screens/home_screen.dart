@@ -96,14 +96,14 @@ class HomeScreen extends StatelessWidget {
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   children: [
-                    _buildGridItem('assets/preloader_assets/nysc.png',
+                    _buildGridItem('assets/pages_items/nysc_logo.png',
                         'Nysc Reg.\nGuidelines'),
                     _buildGridItem(
-                        'assets/preloader_assets/resume.png', 'Resume Builder'),
+                        'assets/pages_items/resume.png', 'Resume Builder'),
                     _buildGridItem(
-                        'assets/preloader_assets/task.png', 'Acquire Skill'),
-                    _buildGridItem('assets/preloader_assets/masters.png',
-                        'Masters Upadate'),
+                        'assets/pages_items/task.png', 'Acquire Skill'),
+                    _buildGridItem('assets/pages_items/masters.png',
+                        'Masters Update'),
                     _buildGridItem(
                         'assets/preloader_assets/job.png', 'Job Offer'),
                     _buildArrowItem(),
@@ -136,8 +136,8 @@ class HomeScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                    leading: Image.asset(
-                      'assets/preloader_assets/fmn.png',
+                                          leading: Image.asset(
+                      'assets/pages_items/job.png',
                       width: 48,
                       height: 48,
                     ),
