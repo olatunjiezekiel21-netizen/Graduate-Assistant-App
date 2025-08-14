@@ -178,6 +178,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: deepPurple,
+        onPressed: () => Navigator.pushNamed(context, '/post'),
+        child: Image.asset('pages assets/Post (1).png', width: 22, height: 22),
+      ),
       bottomNavigationBar: _buildBottomNavBar(context, deepPurple),
     );
   }
@@ -241,32 +246,35 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBottomNavBar(BuildContext context, Color deepPurple) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: deepPurple,
-      unselectedItemColor: Colors.grey,
-      currentIndex: 0,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
-        BottomNavigationBarItem(icon: Icon(Icons.campaign), label: 'Updates'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
-      ],
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            break;
-          case 1:
-            Navigator.pushNamed(context, '/messages');
-            break;
-          case 2:
-            Navigator.pushNamed(context, '/updates');
-            break;
-          case 3:
-            Navigator.pushNamed(context, '/me');
-            break;
-        }
-      },
+    return Container(
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, -2))]),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: deepPurple,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 0,
+        items: [
+          BottomNavigationBarItem(icon: Image.asset('pages assets/Home (1).png', width: 22, height: 22), label: 'Home'),
+          BottomNavigationBarItem(icon: Image.asset('pages assets/Annotation.png', width: 22, height: 22), label: 'Messages'),
+          BottomNavigationBarItem(icon: Image.asset('pages assets/Speakerphone.png', width: 22, height: 22), label: 'Updates'),
+          BottomNavigationBarItem(icon: Image.asset('pages assets/UserCircle.png', width: 22, height: 22), label: 'Me'),
+        ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              break;
+            case 1:
+              Navigator.pushNamed(context, '/messages');
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/updates');
+              break;
+            case 3:
+              Navigator.pushNamed(context, '/me');
+              break;
+          }
+        },
+      ),
     );
   }
 }

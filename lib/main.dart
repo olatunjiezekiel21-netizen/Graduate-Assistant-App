@@ -75,6 +75,7 @@ class NewlyGraduateHub extends StatelessWidget {
         '/tasks': (context) => const TasksScreen(),
         '/masters-update': (context) => const MastersUpdateScreen(),
         '/me': (context) => const UserScreen(),
+        '/post': (context) => const PostScreen(),
       },
     );
   }
@@ -367,6 +368,43 @@ class MastersUpdateScreen extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 color: Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PostScreen extends StatelessWidget {
+  const PostScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color deepPurple = const Color(0xFF6C2786);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Post', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(hintText: 'What do you want to share?', hintStyle: GoogleFonts.poppins()),
+              maxLines: 6,
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: deepPurple),
+                onPressed: () => Navigator.pop(context),
+                child: Text('Post', style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600)),
               ),
             ),
           ],
