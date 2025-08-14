@@ -178,7 +178,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavBar(deepPurple),
+      bottomNavigationBar: _buildBottomNavBar(context, deepPurple),
     );
   }
 
@@ -240,7 +240,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavBar(Color deepPurple) {
+  Widget _buildBottomNavBar(BuildContext context, Color deepPurple) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: deepPurple,
