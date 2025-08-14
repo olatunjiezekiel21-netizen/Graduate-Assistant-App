@@ -62,12 +62,12 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.headphones, color: Colors.white, size: 28),
+                      icon: Image.asset('pages assets/Customer care (1).png', width: 28, height: 28),
                       onPressed: () => Navigator.pushNamed(context, '/customer-care'),
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: const Icon(Icons.notifications, color: Colors.white, size: 28),
+                      icon: Image.asset('pages assets/Bell.png', width: 24, height: 24),
                       onPressed: () => Navigator.pushNamed(context, '/updates'),
                     ),
                   ],
@@ -104,23 +104,23 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {},
-                      child: _buildGridItem('assets/preloader_assets/nysc.png', 'Nysc Reg.\nGuidelines'),
+                      child: _buildGridItem('pages assets/nysc logo.png', 'Nysc Reg.\nGuidelines'),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/resume-builder'),
-                      child: _buildGridItem('assets/preloader_assets/resume.png', 'Resume Builder'),
+                      child: _buildGridItem('assets/pages_items/resume.png', 'Resume Builder'),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/skills'),
-                      child: _buildGridItem('assets/preloader_assets/task.png', 'Acquire Skill'),
+                      child: _buildGridItem('assets/pages_items/task.png', 'Acquire Skill'),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/masters-update'),
-                      child: _buildGridItem('assets/preloader_assets/masters.png', 'Masters Upadate'),
+                      child: _buildGridItem('assets/pages_items/masters.png', 'Masters Update'),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, '/jobs'),
-                      child: _buildGridItem('assets/preloader_assets/job.png', 'Job Offer'),
+                      child: _buildGridItem('assets/pages_items/job.png', 'Job Offer'),
                     ),
                     _buildArrowItem(),
                   ],
@@ -153,7 +153,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: ListTile(
                     leading: Image.asset(
-                      'assets/preloader_assets/fmn.png',
+                      'pages assets/job task.png',
                       width: 48,
                       height: 48,
                     ),

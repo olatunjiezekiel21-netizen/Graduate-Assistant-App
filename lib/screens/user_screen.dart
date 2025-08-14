@@ -17,11 +17,12 @@ class UserScreen extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: deepPurple,
-                  ),
+                  height: 220,
+                  decoration: BoxDecoration(color: deepPurple),
                 ),
+                // Decorative rectangles
+                Positioned(top: 120, left: -20, child: Image.asset('pages assets/Rectangle 42.png', width: 160)),
+                Positioned(top: 120, right: -20, child: Image.asset('pages assets/Rectangle 43.png', width: 160)),
                 Positioned(
                   top: 16,
                   left: 8,
@@ -35,22 +36,22 @@ class UserScreen extends StatelessWidget {
                   right: 24,
                   child: Row(
                     children: [
-                      Icon(Icons.headphones, color: Colors.white, size: 28),
-                      const SizedBox(width: 16),
-                      Icon(Icons.notifications, color: Colors.white, size: 28),
+                      Image.asset('pages assets/Customer care (1).png', width: 24, height: 24),
+                      const SizedBox(width: 12),
+                      Image.asset('pages assets/Bell.png', width: 20, height: 20),
                     ],
                   ),
                 ),
                 Positioned(
-                  top: 60,
+                  top: 70,
                   left: 0,
                   right: 0,
                   child: Column(
                     children: [
                       CircleAvatar(
                         radius: 48,
-                        backgroundImage: AssetImage(
-                            'assets/pages/items/profile_avatar.png'), // Replace with your asset
+                        backgroundColor: Colors.white,
+                        child: Image.asset('pages assets/UserCircle.png', width: 56, height: 56),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -106,7 +107,7 @@ class UserScreen extends StatelessWidget {
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      onPressed: () {},
+                      onPressed: () => Navigator.pushNamed(context, '/skill-progress'),
                       child: Text(
                         'Skill acquisition Progress',
                         style: GoogleFonts.poppins(
@@ -123,7 +124,7 @@ class UserScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(deepPurple),
+      bottomNavigationBar: _buildBottomNavBar(context, deepPurple),
     );
   }
 
@@ -159,7 +160,7 @@ class UserScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavBar(Color deepPurple) {
+  Widget _buildBottomNavBar(BuildContext context, Color deepPurple) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: deepPurple,
@@ -172,7 +173,19 @@ class UserScreen extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
       ],
       onTap: (index) {
-        // Implement navigation if needed
+        switch (index) {
+          case 0:
+            Navigator.pushReplacementNamed(context, '/home');
+            break;
+          case 1:
+            Navigator.pushReplacementNamed(context, '/messages');
+            break;
+          case 2:
+            Navigator.pushReplacementNamed(context, '/updates');
+            break;
+          case 3:
+            break;
+        }
       },
     );
   }
