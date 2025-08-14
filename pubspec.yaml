@@ -1,11 +1,11 @@
 name: newly_graduate_hub
 description: A comprehensive mobile app for newly graduated students to build their careers.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -14,9 +14,9 @@ dependencies:
   http: ^1.1.0
   cached_network_image: ^3.3.0
   flutter_svg: ^2.0.9
-  lottie: ^2.7.0
+  lottie: ^3.3.1
   flutter_animate: ^4.2.0+1
-  google_fonts: ^5.1.0
+  google_fonts: ^6.3.0
   image_picker: ^1.0.4
   url_launcher: ^6.2.1
 
@@ -25,11 +25,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
-  uses-material-design: true
   assets:
-    - preloader assets/
-    - pages assets/
-    - assets/images/ 
+    - assets/preloader_assets/charco_education.png
+    - assets/preloader_assets/fresh_folk_teaching.png
+    - assets/preloader_assets/happy_bunch_chat.png
+    - assets/preloader_assets/ola_playing_video_games.png
+    - assets/pages_items/register.png
+    - assets/pages_items/register_gradient.png
+    - assets/pages_items/nysc_logo.png
+    - assets/pages_items/resume.png
+    - assets/pages_items/task.png
+    - assets/pages_items/masters.png
+    - assets/pages_items/job.png

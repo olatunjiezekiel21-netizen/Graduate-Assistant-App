@@ -1,470 +1,265 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    const DashboardTab(),
-    const SkillsTab(),
-    const JobsTab(),
-    const ProfileTab(),
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    final Color deepPurple = const Color(0xFF6C2786);
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: Container(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          // Curved header
+          Stack(
+            children: [
+              ClipPath(
+                clipper: CurvedHeaderClipper(),
+                child: Container(
+                  height: 220,
+                  color: deepPurple,
+                ),
+              ),
+              Positioned(
+                top: 40,
+                left: 24,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 22,
+                      backgroundImage: AssetImage(
+                          'assets/preloader_assets/charco_education.png'),
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Welcome back',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                        Text(
+                          'DADA TIMILEHIN S.',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 40,
+                right: 24,
+                child: Row(
+                  children: [
+                    Icon(Icons.headphones, color: Colors.white, size: 28),
+                    const SizedBox(width: 16),
+                    Icon(Icons.notifications, color: Colors.white, size: 28),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 120,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Text(
+                    'Graduate Guide',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 28,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Main grid
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Column(
+              children: [
+                GridView.count(
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  children: [
+                    _buildGridItem('assets/preloader_assets/nysc.png',
+                        'Nysc Reg.\nGuidelines'),
+                    _buildGridItem(
+                        'assets/preloader_assets/resume.png', 'Resume Builder'),
+                    _buildGridItem(
+                        'assets/preloader_assets/task.png', 'Acquire Skill'),
+                    _buildGridItem('assets/preloader_assets/masters.png',
+                        'Masters Upadate'),
+                    _buildGridItem(
+                        'assets/preloader_assets/job.png', 'Job Offer'),
+                    _buildArrowItem(),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Campus News',
+                      style: GoogleFonts.poppins(
+                        color: deepPurple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      'See all >',
+                      style: GoogleFonts.poppins(
+                        color: Colors.grey[600],
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    leading: Image.asset(
+                      'assets/preloader_assets/fmn.png',
+                      width: 48,
+                      height: 48,
+                    ),
+                    title: Text(
+                      'Lautech Student Emerge as the best in the FMN Competition',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Posted 30 min ago',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNavBar(deepPurple),
+    );
+  }
+
+  Widget _buildGridItem(String asset, String label) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                blurRadius: 4,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(asset, fit: BoxFit.contain),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildArrowItem() {
+    return Center(
+      child: Container(
+        width: 60,
+        height: 60,
         decoration: BoxDecoration(
           color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 4,
               spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, -2),
             ),
           ],
         ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.blue.shade600,
-          unselectedItemColor: Colors.grey.shade600,
-          selectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-          unselectedLabelStyle: GoogleFonts.poppins(),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.psychology),
-              label: 'Skills',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.work),
-              label: 'Jobs',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
+        child:
+            const Icon(Icons.arrow_forward_ios, size: 32, color: Colors.grey),
       ),
+    );
+  }
+
+  Widget _buildBottomNavBar(Color deepPurple) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: deepPurple,
+      unselectedItemColor: Colors.grey,
+      currentIndex: 0,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
+        BottomNavigationBarItem(icon: Icon(Icons.campaign), label: 'Updates'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Me'),
+      ],
+      onTap: (index) {
+        // Implement navigation if needed
+      },
     );
   }
 }
 
-class DashboardTab extends StatelessWidget {
-  const DashboardTab({super.key});
+// Curved header clipper
+class CurvedHeaderClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 60);
+    path.quadraticBezierTo(
+      size.width / 2,
+      size.height,
+      size.width,
+      size.height - 60,
+    );
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: Text(
-          'Newly Graduate Hub',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-              Navigator.pushNamed(context, '/updates');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.message),
-            onPressed: () {
-              Navigator.pushNamed(context, '/messages');
-            },
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          // Exact Home screen design as background
-          Positioned.fill(
-            child: Image.asset(
-              'pages assets/Home screen.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          
-          // Overlay content for navigation
-          SafeArea(
-            child: Column(
-              children: [
-                // Top section with navigation buttons
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.notifications, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/updates');
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.message, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/messages');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                
-                const Spacer(),
-                
-                // Bottom section with feature buttons
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      // Feature buttons grid
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Resume Builder',
-                              'pages assets/Resume Buider (1).png',
-                              () => Navigator.pushNamed(context, '/resume-builder'),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Skills',
-                              'pages assets/Skills.png',
-                              () => Navigator.pushNamed(context, '/skills'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Jobs',
-                              'pages assets/job task.png',
-                              () => Navigator.pushNamed(context, '/jobs'),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Updates',
-                              'pages assets/updates.png',
-                              () => Navigator.pushNamed(context, '/updates'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Customer Care',
-                              'pages assets/Customer care (1).png',
-                              () => Navigator.pushNamed(context, '/customer-care'),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Skill Progress',
-                              'pages assets/skill Progress.png',
-                              () => Navigator.pushNamed(context, '/skill-progress'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Tasks',
-                              'pages assets/TASK (1).png',
-                              () => Navigator.pushNamed(context, '/tasks'),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildFeatureButton(
-                              context,
-                              'Masters Update',
-                              'pages assets/Masters update.png',
-                              () => Navigator.pushNamed(context, '/masters-update'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureButton(
-    BuildContext context,
-    String title,
-    String imagePath,
-    VoidCallback onTap,
-  ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 80,
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              imagePath,
-              width: 40,
-              height: 40,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade800,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-
-class SkillsTab extends StatelessWidget {
-  const SkillsTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: Text(
-          'Skills',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          // Exact Skills design as background
-          Positioned.fill(
-            child: Image.asset(
-              'pages assets/Skills.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          
-          // Overlay content
-          SafeArea(
-            child: Column(
-              children: [
-                // Back button
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                ),
-                
-                const Spacer(),
-                
-                // Bottom content
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    'Skills Development',
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class JobsTab extends StatelessWidget {
-  const JobsTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: Text(
-          'Jobs',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'pages assets/job task.png',
-              width: 200,
-              height: 200,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Job Opportunities',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming Soon',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: Colors.grey.shade600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileTab extends StatelessWidget {
-  const ProfileTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          // Exact Me design as background
-          Positioned.fill(
-            child: Image.asset(
-              'pages assets/Me.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          
-          // Overlay content
-          SafeArea(
-            child: Column(
-              children: [
-                // Back button
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                ),
-                
-                const Spacer(),
-                
-                // Bottom content
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    'My Profile',
-                    style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-} 

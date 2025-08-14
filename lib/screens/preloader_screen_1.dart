@@ -1,201 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:async';
 
-class PreloaderScreen1 extends StatefulWidget {
+class PreloaderScreen1 extends StatelessWidget {
   const PreloaderScreen1({super.key});
 
   @override
-  State<PreloaderScreen1> createState() => _PreloaderScreen1State();
-}
-
-class _PreloaderScreen1State extends State<PreloaderScreen1> with TickerProviderStateMixin {
-  late AnimationController _logoController;
-  late AnimationController _textController;
-  late AnimationController _progressController;
-
-  @override
-  void initState() {
-    super.initState();
-    _logoController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-    _textController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
-    _progressController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
-
-    _startPreloader();
-  }
-
-  @override
-  void dispose() {
-    _logoController.dispose();
-    _textController.dispose();
-    _progressController.dispose();
-    super.dispose();
-  }
-
-  void _startPreloader() {
-    _logoController.forward();
-    
-    Timer(const Duration(milliseconds: 500), () {
-      _textController.forward();
-    });
-
-    Timer(const Duration(seconds: 1), () {
-      _progressController.forward();
-    });
-
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/preloader2');
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final Color deepPurple = const Color(0xFF6C2786);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // Reference image as background
-          Positioned.fill(
-            child: Image.asset(
-              'preloader assets/Preloader1 (1).png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          
-          // Overlay content
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white.withOpacity(0.9),
-                  Colors.white.withOpacity(0.7),
-                ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Skip button
+            Positioned(
+              top: 16,
+              right: 24,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
+                child: Text(
+                  'Skip',
+                  style: GoogleFonts.poppins(
+                    color: deepPurple,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
-            child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Logo section
-                  AnimatedBuilder(
-                    animation: _logoController,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: _logoController.value,
-                        child: Container(
-                          width: 250,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.blue.withOpacity(0.3),
-                                blurRadius: 20,
-                                spreadRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              'preloader assets/Charco Education.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+            // Main content
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                // Illustration
+                Center(
+                  child: Image.asset(
+                    'assets/preloader_assets/charco_education.png',
+                    width: 220,
+                    height: 220,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                // Description
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Text(
+                    'Graduate guide is an application design to assist graduate to navigate their next stage of their life.',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                // Progress indicator
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildDot(deepPurple, true),
+                    _buildDot(deepPurple.withOpacity(0.3), false),
+                    _buildDot(deepPurple.withOpacity(0.15), false),
+                    _buildDot(deepPurple.withOpacity(0.15), false),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                // Next button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: deepPurple,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      );
-                    },
-                  ).animate().fadeIn(duration: 1.seconds).then().scale(begin: const Offset(0.8, 0.8), end: const Offset(1.2, 1.2)),
-
-                  const SizedBox(height: 40),
-
-                  // Text section
-                  AnimatedBuilder(
-                    animation: _textController,
-                    builder: (context, child) {
-                      return Opacity(
-                        opacity: _textController.value,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Newly Graduate Hub',
-                              style: GoogleFonts.poppins(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue.shade800,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Your Career Journey Starts Here',
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ],
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/preloader2');
+                      },
+                      child: Text(
+                        'NEXT',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          letterSpacing: 1,
                         ),
-                      );
-                    },
-                  ).animate().slideY(begin: 0.5, end: 0),
-
-                  const SizedBox(height: 60),
-
-                  // Progress section
-                  AnimatedBuilder(
-                    animation: _progressController,
-                    builder: (context, child) {
-                      return Column(
-                        children: [
-                          Container(
-                            width: 200,
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            child: FractionallySizedBox(
-                              alignment: Alignment.centerLeft,
-                              widthFactor: _progressController.value,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade600,
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Loading... ${(_progressController.value * 100).toInt()}%',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ).animate().fadeIn(delay: 1.seconds).then().shimmer(),
-                ],
-              ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDot(Color color, bool isActive) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      width: isActive ? 32 : 16,
+      height: 6,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(3),
       ),
     );
   }

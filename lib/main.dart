@@ -34,6 +34,7 @@ class NewlyGraduateHub extends StatelessWidget {
           primary: Colors.purple.shade800,
         ),
         useMaterial3: true,
+        textTheme: GoogleFonts.poppinsTextTheme(),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -56,12 +57,8 @@ class NewlyGraduateHub extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/preloader1',
+      initialRoute: '/onboarding',
       routes: {
-        '/preloader1': (context) => const PreloaderScreen1(),
-        '/preloader2': (context) => const PreloaderScreen2(),
-        '/preloader3': (context) => const PreloaderScreen3(),
-        '/preloader4': (context) => const PreloaderScreen4(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
@@ -105,7 +102,7 @@ class SkillsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'pages assets/Skills.png',
+              'assets/pages/items/skills.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -158,7 +155,7 @@ class JobsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'pages assets/job task.png',
+              'assets/pages/items/job_task.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -211,7 +208,7 @@ class SkillProgressScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'pages assets/skill Progress.png',
+              'assets/pages/items/skill_progress.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -264,7 +261,7 @@ class TasksScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'pages assets/TASK (1).png',
+              'assets/pages/items/task.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -317,7 +314,7 @@ class MastersUpdateScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'pages assets/Masters update.png',
+              'assets/pages/items/masters_update.png',
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -344,4 +341,4 @@ class MastersUpdateScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}
